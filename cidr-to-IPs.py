@@ -1,4 +1,7 @@
 #!/usr/bin/env python3
+"""
+Convert a CIDR range into all host IP addresses
+"""
 
 import ipaddress
 import sys

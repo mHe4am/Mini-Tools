@@ -1,4 +1,8 @@
 #!/usr/bin/env python3
+"""
+Extract unique domains from a list of URLs (e.g., Wayback output)
+"""
+
 import sys
 from urllib.parse import urlparse
 from tqdm import tqdm

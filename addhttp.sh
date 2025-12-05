@@ -1,4 +1,5 @@
 #!/bin/bash
+# Adds http/https scheme to hostnames; optionally outputs both
 
 # Function to print usage
 print_usage() {

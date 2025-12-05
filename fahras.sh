@@ -1,4 +1,10 @@
 #!/bin/bash
+# 
+# Generate a custom wordlist from URLs (for content discovery)
+#   Extracts path segments from URL collections (Burp, Wayback, etc.) to create
+#   custom wordlists for content discovery. Filters by length, removes extensions,
+#   and ranks by frequency for more effective fuzzing against specific targets.
+#
 
 # Default values
 output_file="wordlist.txt"

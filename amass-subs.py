@@ -1,4 +1,8 @@
 #!/usr/bin/env python3
+"""
+Extracts subdomains from amass output for a specified base domain
+"""
+
 import re
 import sys
 
