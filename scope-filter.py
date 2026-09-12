@@ -1,10 +1,11 @@
 #!/usr/bin/env python3
 """
-Filters out-of-scope URLs
+Filters out-of-scope URLs/Endpoints from stdin based on a scope file.
 
 Usage:
     scopefilter.py -s scope.txt < urls.txt > in-scope.txt
     cat urls.txt | scopefilter.py -s scope.txt > in-scope.txt
+    echo https://example.com | hakrawler | scopefilter.py -s scope.txt > in-scope.txt
 
 "scope.txt" example:
 ```
