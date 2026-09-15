@@ -6,6 +6,7 @@ Useful for MindMapping (XMind)
 Usage:
     python3 domain_tree.py domains.txt > tree.txt
     cat domains.txt | python3 domain_tree.py > tree.txt
+    python3 domain_tree.py -b 20 domains.txt > tree.txt   # batch large groups
 """
 import sys
 import argparse
@@ -65,6 +66,9 @@ def main():
                          help="blank lines to insert between each output line (default: 0)")
     parser.add_argument("-m", "--markdown", action="store_true",
                          help="output as nested '-' bullet markdown (for pasting into XMind/mind-map tools)")
+    parser.add_argument("-b", "--batch-size", type=int, default=0, metavar="N",
+                         help="group subdomains of large domains under 'Batch NN' nodes, N per batch "
+                              "(applies to domains with more than N subs; 0 = disabled)")
     args = parser.parse_args()
 
     raw = (open(args.input).read().splitlines() if args.input
@@ -84,12 +88,28 @@ def main():
             out.append(apex)
         apex_depth = len(apex.split("."))
         subs = sorted((d for d in groups[apex] if d != apex), key=sort_key)
-        for d in subs:
-            depth = len(d.split(".")) - apex_depth
+
+        def emit(d: str, extra_depth: int):
+            depth = len(d.split(".")) - apex_depth + extra_depth
             if args.markdown:
                 out.append("  " * depth + f"- {d}")
             else:
                 out.append("\t" * depth + d)
+
+        if args.batch_size > 0 and len(subs) > args.batch_size:
+            batches = [subs[i:i + args.batch_size]
+                       for i in range(0, len(subs), args.batch_size)]
+            for i, batch in enumerate(batches, 1):
+                label = f"Batch {i:02d}"
+                if args.markdown:
+                    out.append("  " + f"- {label}")
+                else:
+                    out.append("\t" + label)
+                for d in batch:
+                    emit(d, 1)
+        else:
+            for d in subs:
+                emit(d, 0)
 
     sep = "\n" * (args.newlines + 1)
     print(sep.join(out))
